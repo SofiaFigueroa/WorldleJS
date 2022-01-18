@@ -1,0 +1,23 @@
+{
+  "name": "wordlejs",
+  "version": "0.0.1",
+  "description": "wordleJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SofiaFigueroa/wordleJS.git"
+  },
+  "author": "Sofia Figueroa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SofiaFigueroa/wordleJS/issues"
+  },
+  "homepage": "https://github.com/SofiaFigueroa/wordleJS#readme",
+  "dependencies": {
+    "discord.js": "^13.6.0",
+    "dotenv": "^14.2.0"
+  }
+}
