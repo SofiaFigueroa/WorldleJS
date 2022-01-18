@@ -9,27 +9,24 @@ const client = new Discord.Client({
    ]
 })
 
-// Add event listeners
-// Ready
-client.on("ready",() => {
-   console.log(`Logged in as ${client.user.tag}`)
-})
+let bot = {
+   client,
+   prefix: "w.",
+   owners: ["145650760816787456"]
+}
 
-// Message Create
-client.on("messageCreate", (message) => {
-   switch (message.content) {
-      case "!ping":
-         message.reply("Pong! 🥰")
-         break;
+client.commands = new Discord.Collection()
+client.events = new Discord.Collection()
 
-      case "!pong":
-         message.reply("Ping! 😲")
-         break;
-   
-      default:
-         break;
-   }
-})
+client.loadEvents = (bot, reload) => require("./handlers/events")(bot, reload)
+client.loadCommands = (bot, reload) => require("./handlers/commands")(bot, reload)
+
+client.loadEvents(bot, false)
+client.loadCommands(bot, false)
+
+module.exports = bot
+
+// const botChannelID = "782005686464151552"
 
 client.login(process.env.TOKEN)
 
