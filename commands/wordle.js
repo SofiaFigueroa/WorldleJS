@@ -5,6 +5,16 @@ module.exports = {
       .setName('wordle')
       .setDescription('Start your WordleJS Game!'),
    async execute(interaction) {
-      await interaction.reply('Wordle!');
+      interaction.reply('Please enter more input.').then(() => {
+         const filter = m => interaction.user.id === m.author.id;
+
+         interaction.channel.awaitMessages({ filter, time: 60000, max: 1, errors: ['time'] })
+            .then(messages => {
+               interaction.followUp(`You've entered: ${messages.first().content}`);
+            })
+            .catch(() => {
+               interaction.followUp('You did not enter any input!');
+            });
+      });
    },
 };
