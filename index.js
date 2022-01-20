@@ -1,31 +1,23 @@
 // Initialize using Discord.js
-const Discord = require("discord.js")
-require("dotenv").config()
+const Discord = require('discord.js');
+const { token } = require('./config.json');
+
+const bot = {
+	client,
+	prefix: 'w.',
+	owners: ['145650760816787456'],
+};
 
 const client = new Discord.Client({
-   intents: [
-      "GUILDS",
-      "GUILD_MESSAGES"
-   ]
-})
+	intents: [
+		'GUILDS',
+		'GUILD_MESSAGES',
+	],
+});
 
-let bot = {
-   client,
-   prefix: "w.",
-   owners: ["145650760816787456"]
-}
+client.once('ready', () => {
+	console.log(`Logged in as ${bot.client.user.tag}`);
+});
 
-client.commands = new Discord.Collection()
-client.events = new Discord.Collection()
-
-client.loadEvents = (bot, reload) => require("./handlers/events")(bot, reload)
-client.loadCommands = (bot, reload) => require("./handlers/commands")(bot, reload)
-
-client.loadEvents(bot, false)
-client.loadCommands(bot, false)
-
-module.exports = bot
-
-
-client.login(process.env.TOKEN)
+client.login(token);
 
