@@ -5,7 +5,9 @@ const { clientId, guildId, token } = require('./config.json');
 
 const commands = [
    new SlashCommandBuilder().setName('ping').setDescription('Replies with pong!'),
+   new SlashCommandBuilder().setName('pong').setDescription('Replies with ping!'),
    new SlashCommandBuilder().setName('server').setDescription('Replies with server info!'),
+   new SlashCommandBuilder().setName('user').setDescription('All about you!'),
    new SlashCommandBuilder().setName('wordle').setDescription('Start your WordleJS Game!'),
 ]
    .map(command => command.toJSON());
