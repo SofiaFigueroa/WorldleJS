@@ -29,12 +29,13 @@ module.exports = {
          return message.reply("You don't have permission to use this command!")
       }
 
+      // Try running the command
       try {
          await command.run({...bot, message, args})
       } catch (err) {
          let errMsg = err.toString()
          // Add manual command
-         if (errMsg.startswith("?")) {
+         if (errMsg.startsWith("?")) {
             errMsg = errMsg.slice(1)
             await message.reply(errMsg)
          }

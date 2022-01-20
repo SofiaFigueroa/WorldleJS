@@ -26,7 +26,6 @@ client.loadCommands(bot, false)
 
 module.exports = bot
 
-// const botChannelID = "782005686464151552"
 
 client.login(process.env.TOKEN)
 
