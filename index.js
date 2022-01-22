@@ -1,31 +1,60 @@
 // Initialize using Discord.js
-const Discord = require("discord.js")
-require("dotenv").config()
+const fs = require('fs');
+const Discord = require('discord.js');
+const { token } = require('./config.json');
 
 const client = new Discord.Client({
-   intents: [
-      "GUILDS",
-      "GUILD_MESSAGES"
-   ]
-})
+	intents: [
+		'GUILDS',
+		'GUILD_MESSAGES',
+	],
+});
 
-let bot = {
-   client,
-   prefix: "w.",
-   owners: ["145650760816787456"]
+const bot = {
+	client,
+	prefix: 'w.',
+	owners: ['145650760816787456'],
+};
+
+client.once('ready', () => {
+	console.log(`Logged in as ${bot.client.user.tag}`);
+});
+
+client.commands = new Discord.Collection();
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+	client.commands.set(command.data.name, command);
 }
 
-client.commands = new Discord.Collection()
-client.events = new Discord.Collection()
+const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 
-client.loadEvents = (bot, reload) => require("./handlers/events")(bot, reload)
-client.loadCommands = (bot, reload) => require("./handlers/commands")(bot, reload)
+for (const file of eventFiles) {
+	const event = require(`./events/${file}`);
+	if (event.once) {
+		client.once(event.name, (...args) => event.execute(...args));
+	}
+	else {
+		client.on(event.name, (...args) => event.execute(...args));
+	}
+}
 
-client.loadEvents(bot, false)
-client.loadCommands(bot, false)
+client.on('interactionCreate', async interaction => {
+	if (!interaction.isCommand()) return;
 
-module.exports = bot
+	const command = client.commands.get(interaction.commandName);
 
+	if (!command) return;
 
-client.login(process.env.TOKEN)
+	try {
+		await command.execute(interaction);
+	}
+	catch (error) {
+		console.error(error);
+		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+	}
 
+});
+
+client.login(token);

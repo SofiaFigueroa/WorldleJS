@@ -1,6 +1,7 @@
 module.exports = {
-   name: "ready",
-   run: async(bot) => {
-      console.log(`Logged in as ${bot.client.user.tag}`)
-   }
-}
+	name: 'ready',
+	once: true,
+	execute(client) {
+		console.log(`Ready! Logged in as ${client.user.tag}`);
+	},
+};
